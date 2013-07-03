@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <author>Bossett</author>
+    <title>HEX Metrics</title>
+    {%for post in posts.items %}
+    <entry>
+        <title>{{post.title}}</title>
+        <link href="http://hexmetrics.ni.tl{{ url_for('BlogView:postBySlug', slug=post.slug) }}"/>
+        <content type="html">
+        <![CDATA[
+        {{ post.body|safe }}
+        ]]>
+        </content>
+    </entry>
+    {%endfor%}
+</feed>

@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="main">
+
+    <div class="container">
+
+      <div class="row">
+      	
+      	<div class="span6">
+      	{% for snippet in snippets %}
+      		<div class="widget stacked">
+				
+				<div class="widget-header">
+				{{ snippet.title | safe }}
+				</div> <!-- /widget-header -->
+				
+				<div class="widget-content">
+				{{ snippet.body | safe }}
+				</div> <!-- /widget-content -->
+			
+			</div> <!-- /widget -->
+			{% endfor %}
+
+      		
+	    </div> <!-- /span6 -->
+      	
+      	
+      	<div class="span6">	
+
+      				<div class="widget widget-nopad stacked">
+						
+				<div class="widget-header">
+					<i class="icon-calendar"></i>
+					<h3>Recent Posts</h3>
+				</div> <!-- /widget-header -->
+				
+				<div class="widget-content">
+					
+					<ul class="news-items">
+						{% for top_post in top_posts -%}
+						<li>
+							<div class="news-item-detail">										
+								<a href="{{ url_for('BlogView:postBySlug', slug=top_post.slug) }}" class="news-item-title">{{ top_post.title }}</a>
+								<p class="news-item-preview">{% if top_post.body|length > 300 %}{{ (top_post.body[0:top_post.body[:300].rfind(' ')])|striptags|urlize }}&hellip; <a href="{{ url_for('BlogView:postBySlug', slug=top_post.slug) }}">[read more]</a>{% else %}{{ top_post.body|striptags|urlize }}{% endif %}</p>
+							</div>
+							
+							<div class="news-item-date">
+								<span class="news-item-day">{{ top_post.created_date.day }}</span>
+								<span class="news-item-month">{{ top_post.created_date.strftime("%b") }}</span>
+							</div>
+						</li>
+						{%- endfor %}
+					</ul>
+					
+				</div> <!-- /widget-content -->
+			
+			</div> <!-- /widget -->	
+							
+	      </div> <!-- /span6 -->
+      	
+      </div> <!-- /row -->
+
+    </div> <!-- /container -->
+    
+</div> <!-- /main -->
+
+{% endblock %}
+{% block javascript %}
+{{ super() }}
+<script src="/static/theme/js/charts/area.js"></script>
+<script src="/static/theme/js/charts/donut.js"></script>
+{% endblock %}
+

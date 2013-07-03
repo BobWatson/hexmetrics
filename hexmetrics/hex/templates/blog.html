@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="main">
+
+    <div class="container">
+
+      <div class="row">
+      	      		
+      	<div class="span8">
+      		{% for post in posts.items -%}
+      		<div class="widget stacked">
+
+      		<div class="widget-header">
+			<i class="icon-file"></i>
+			<a href="{{ url_for('BlogView:postBySlug', slug=post.slug) }}"><h3>{{ post.title }}</h3></a>
+			</div> <!-- /widget-header -->
+				
+			<div class="widget-content">
+
+			{{ post.body|safe }}
+			
+			<div class="smaller-right-and-gray">
+			{% if posts.items|length != 1 or cat %}
+			<a href="{{ url_for('BlogView:postBySlug', slug=post.slug) }}#disqus_thread" style="margin-right:1em"></a>
+			{% endif %}
+			{{ post.created_date }}</div>
+			
+			</div>
+      		
+      		</div>
+      		{%- endfor %}
+      		
+      		{% if posts.items|length == 1 and not cat %}
+      		<div class="widget stacked">
+
+			<script>var disqus_identifier = '{{ url_for('BlogView:postBySlug', slug=posts.items[0].slug) }}'</script>
+
+      		<div class="widget-header">
+			<i class="icon-pushpin"></i>
+			<h3>Comments</h3>
+			</div> <!-- /widget-header -->
+				
+			<div class="widget-content">
+
+			    <div id="disqus_thread"></div>
+			
+			<div class="smaller-right-and-gray"></div>
+			
+			</div>
+      		
+      		</div>
+      		{% endif %}
+      		
+      	    {% if posts.pages > 1 %}
+			<div class="pagination">
+				<ul>
+				{% for page in posts.iter_pages() %}
+				{% if request.endpoint.startswith('BlogView:postsByCategory') %}
+					<li{% if page == posts.page %} class="active"{% endif %}><a href="{{ url_for('BlogView:postsByCategoryPage', cat=cat, num=page) }}">{{ page }}</a></li>
+				{% else %}
+					<li{% if page == posts.page %} class="active"{% endif %}><a href="{{ url_for('BlogView:page', num=page) }}">{{ page }}</a></li>
+				{% endif %}
+				{% endfor %}
+				</ul>
+			</div>
+			{% endif %}
+			
+	    </div> <!-- /span8 -->
+	          		
+	    
+	    
+	    <div class="span4">
+	    
+	    	<div class="widget stacked widget-box">
+				
+				<div class="widget-header">	
+				<i class="icon-list-alt"></i><h3>Blog Categories</h3>			
+				</div> <!-- /widget-header -->
+				
+				<div class="widget-content">
+					<ul>
+					{% for category in categories %}
+					<li><a href="{{ url_for('BlogView:postsByCategory', cat=category.id) }}">{{ category.name }}</a></li>
+					{% endfor %}
+					</ul>
+				</div> <!-- /widget-content -->
+				
+			</div> <!-- /widget -->
+			
+						<div class="widget widget-nopad stacked">
+				
+				
+				
+				<div class="widget-header">	
+				<i class="icon-user"></i><h3>Recent Tweets</h3>		
+				</div> <!-- /widget-header -->
+				
+				<div class="widget-content">
+				<ul class="news-items">
+				{% for tweet in tweets %}
+						<li style="width:100%;padding:0;">
+							<div class="news-item-detail" style="padding-left:1em;">										
+								<a href="https://twitter.com/hexmetrics" class="news-item-title">@HEXMetrics</a>
+								<p class="news-item-preview">{{ tweet.text|safe|urlize }}</p>
+							</div>
+							
+							<div class="news-item-date" style="padding-right:1em;">
+								<a href="https://twitter.com/HEXMetrics/status/{{ tweet.id }}">
+								<span class="news-item-day">{{ tweet.time.day }}</span>
+								<span class="news-item-month">{{ tweet.time.strftime("%b") }}</span>
+								</a>
+							</div>
+						</li>
+					{% endfor %}
+					</ul>			
+				</div> <!-- /widget-content -->
+				
+			</div> <!-- /widget -->
+	    
+	    	{% for snippet in snippets %}
+				
+			<div class="widget stacked widget-box">
+				
+				<div class="widget-header">	
+				{{ snippet.title | safe }}			
+				</div> <!-- /widget-header -->
+				
+				<div class="widget-content">
+					
+					{{ snippet.body | safe }}	
+					
+				</div> <!-- /widget-content -->
+				
+			</div> <!-- /widget -->
+			
+			{% endfor %}
+						
+		</div> <!-- /span4 -->
+      	
+      	
+      	
+      </div> <!-- /row -->
+
+    </div> <!-- /container -->    
+
+</div> <!-- /main -->
+
+{% endblock %}
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+var disqus_shortname = 'hexmetrics'; // required: replace example with your forum shortname
+		
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+(function () {
+	var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+   (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+
+</script>
+{% endblock %}
+
+{% block footer_right %}
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+{% endblock %}

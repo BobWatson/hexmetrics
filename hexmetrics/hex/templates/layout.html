@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} :: HEX Metrics</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">    
+    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico">
+    <link href="/static/theme/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="/static/theme/js/plugins/msgGrowl/css/msgGrowl.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+    <link href="/static/theme/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/theme/css/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet">
+    <link href="/static/theme/js/plugins/msgbox/jquery.msgbox.css" rel="stylesheet">
+    <link href="/static/theme/css/base-admin-2.css" rel="stylesheet">
+    <link href="/static/theme/css/base-admin-2-responsive.css" rel="stylesheet">
+    <link href="/static/theme/css/pages/dashboard.css" rel="stylesheet">
+    <link href="/static/theme/css/custom.css" rel="stylesheet">
+    
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ url_for('BlogView:atom') }}">
+    
+    <link href="/static/theme/css/pages/signin.css" rel="stylesheet" type="text/css">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    {% endblock %}
+
+  </head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+	
+	<div class="navbar-inner">
+		
+		<div class="container">
+			
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<i class="icon-cog"></i>
+			</a>
+			
+			<a class="brand" href="{{ url_for('IndexView:index') }}">
+				HEX Metrics <sup>1.0</sup>
+			</a>		
+			
+			<div class="nav-collapse">
+
+				<ul class="nav pull-right">
+				{% if current_user.is_authenticated() %}
+					<li class="dropdown">						
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-user"></i> 
+							{{ current_user.displayname }}
+							<b class="caret"></b>
+						</a>
+						
+						<ul class="dropdown-menu">
+							{% if current_user.is_admin() %}
+							<li><a href="/admin/"><i class="icon-asterisk"></i>Site Administration</a></li>
+							{% endif %}
+							<li><a href="javascript:;">My Profile</a></li>
+							<li><a href="javascript:;">My Groups</a></li>
+							<li class="divider"></li>
+							<li><a href="{{ url_for('LoginView:logout') }}">Logout</a></li>
+						</ul>						
+					</li>
+				{% else %}
+					<li>
+					 	<a href="{{ url_for('LoginView:index') }}">
+							<i class="icon-user"></i> Log In
+						</a>
+					</li>
+				{% endif %}
+				</ul>
+				
+			</div><!--/.nav-collapse -->	
+	
+		</div> <!-- /container -->
+		
+	</div> <!-- /navbar-inner -->
+	
+</div> <!-- /navbar -->
+    
+
+
+
+    
+<div class="subnavbar">
+
+	<div class="subnavbar-inner">
+	
+		<div class="container">
+
+			<a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">
+				<i class="icon-reorder"></i>
+			</a>
+
+			<div class="subnav-collapse collapse">
+				<ul class="mainnav">
+				
+					<li class="{% if request.endpoint and request.endpoint.startswith('IndexView') %} active{% endif %}">
+						<a href="{{ url_for('IndexView:index') }}">
+							<i class="icon-home"></i>
+							<span>Home</span>
+						</a>	    				
+					</li>
+					
+					<li class="dropdown{% if request.endpoint and request.endpoint.startswith('ToolsView') %} active{% endif %}">					
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-th"></i>
+							<span>Tools</span>
+							<b class="caret"></b>
+						</a>	
+					
+						<ul class="dropdown-menu">
+							<li><a href="{{ url_for('ToolsView:index') }}">All Tools</a></li>
+							<li><a href="{{ url_for('ToolsView:resourceDraw') }}">Resource Draw</a></li>
+						</ul>    				
+					</li>
+					
+					<li class="{% if request.endpoint and request.endpoint.startswith('BlogView') %} active{% endif %}">					
+						<a href="{{ url_for('BlogView:index') }}">
+							<i class="icon-copy"></i>
+							<span>Blog</span>
+
+						</a>			
+					</li>
+					
+					<li class="dropdown">					
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-external-link"></i>
+							<span>External Links</span>
+							<b class="caret"></b>
+						</a>	
+					
+						<ul class="dropdown-menu">
+							<li><a href="http://hextcg.gamepedia.com/Hex_Wiki">Hex Wiki</a>
+							<li><a href="http://hexshuffle.wordpress.com/">Hex Shuffle</a></li>
+							<li><a href="http://www.hex-datamine.com/">HEX Data Mine</a></li>
+							<li><a href="http://hextcg.com/">Hex TCG Official Site</a></li>
+						</ul>    				
+					</li>
+				
+				</ul>
+			</div> <!-- /.subnav-collapse -->
+
+		</div> <!-- /container -->
+	
+	</div> <!-- /subnavbar-inner -->
+
+</div> <!-- /subnavbar -->
+
+{% block content %}{% endblock %}
+
+<div class="extra">
+
+	<div class="container">
+
+		<div class="row">
+			
+			<div class="span3">
+				
+				<h4>About</h4>
+				
+				<ul>
+					<li><a href="javascript:;">About Us</a></li>
+					<li><a href="javascript:;">Twitter</a></li>
+					<li><a href="javascript:;">Facebook</a></li>
+					<li><a href="javascript:;">Google+</a></li>
+				</ul>
+				
+			</div> <!-- /span3 -->
+			
+			<div class="span3">
+				
+				<h4>Support</h4>
+				
+				<ul>
+					<li><a href="javascript:;">Frequently Asked Questions</a></li>
+					<li><a href="javascript:;">Ask a Question</a></li>
+					<li><a href="javascript:;">Video Tutorial</a></li>
+					<li><a href="javascript:;">Feedback</a></li>
+				</ul>
+				
+			</div> <!-- /span3 -->
+			
+			<div class="span3">
+				
+				<h4>Legal</h4>
+				
+				<ul>
+					<li><a href="javascript:;">License</a></li>
+					<li><a href="javascript:;">Terms of Use</a></li>
+					<li><a href="javascript:;">Privacy Policy</a></li>
+					<li><a href="javascript:;">Security</a></li>
+				</ul>
+				
+			</div> <!-- /span3 -->
+			
+			<div class="span3">
+				
+				<h4>Settings</h4>
+				
+				<ul>
+					<li><a href="javascript:;">Consectetur adipisicing</a></li>
+					<li><a href="javascript:;">Eiusmod tempor </a></li>
+					<li><a href="javascript:;">Fugiat nulla pariatur</a></li>
+					<li><a href="javascript:;">Officia deserunt</a></li>
+				</ul>
+				
+			</div> <!-- /span3 -->
+			
+		</div> <!-- /row -->
+
+	</div> <!-- /container -->
+
+</div> <!-- /extra -->
+
+
+  	
+    
+<div class="footer">
+		
+	<div class="container">
+		
+		<div class="row">
+			
+			<div id="footer-copyright" class="span6">
+				{% block footer_left %}{% endblock %}
+			</div> <!-- /span6 -->
+			
+			<div id="footer-terms" class="span6">
+				{% block footer_right %}{% endblock %}
+			</div> <!-- /.span6 -->
+			
+		</div> <!-- /row -->
+		
+	</div> <!-- /container -->
+	
+</div> <!-- /footer -->
+
+{% block javascript %}  
+
+<script src="/static/theme/js/libs/jquery-1.8.3.min.js"></script>
+<script src="/static/theme/js/libs/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="/static/theme/js/libs/bootstrap.min.js"></script>
+<script src="/static/theme/js/plugins/msgGrowl/js/msgGrowl.js"></script>
+<script src="/static/theme/js/plugins/msgbox/jquery.msgbox.min.js"></script>
+<script src="/static/theme/js/plugins/flot/jquery.flot.js"></script>
+<script src="/static/theme/js/plugins/flot/jquery.flot.pie.js"></script>
+<script src="/static/theme/js/plugins/flot/jquery.flot.orderBars.js"></script>
+<script src="/static/theme/js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="/static/theme/js/Application.js"></script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+ <script>
+ $(document).ready (function () {
+ {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+	$.msgGrowl ({
+		type: '{{ category }}'
+		, title: '{{ category.capitalize() }}'
+		, text: '{{ message }}.'
+	});
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+});
+ </script>
+
+{% endblock %}
+
+  </body>
+</html>

@@ -1,0 +1,278 @@
+{% extends "layout.html" %}
+{% block title %}Resource Calculator{% endblock %}
+{% block head %}
+{{ super() }}
+<style>
+.form-horizontal .controls {
+	margin-left:60px;
+}
+
+#more-button {
+	margin-left:0px;
+}
+
+#accumulate-help strong, #elim_unplayable-help strong {
+	cursor: pointer !important;
+	color: blue !important;
+}
+
+.errorDiv {
+    margin-left: 220px;
+}
+
+.dynamic-errorDiv {
+	margin-left: 160px;
+	margin-top: -20px;
+	margin-bottom: 32px;
+}
+</style>
+{% endblock %}
+{% block content -%}
+<div class="main">
+    <div class="container">
+      	<div class="row">
+      		<div class="span6">
+      			<div class="widget stacked">
+				
+					<div class="widget-header">
+					<i class="icon-pencil"></i>
+      				<h3>Resource Calculator</h3>
+					</div> <!-- /widget-header -->
+				
+					<div class="widget-content">
+						<form action="{{ url_for('ToolsView:resourceDraw') }}#results" method="post" id="resources-form" class="form-horizontal">
+						<fieldset>
+						
+							{{form.hidden_tag()}}		
+							{% for error in form.errors.csrf_token %}
+        					<div class="control-group"><span class="error">{{error}}</span></div>
+        					{% endfor %}
+			
+							<div class="control-group">
+						      <label class="control-label" for="decksize">Deck Size</label>
+						      <div class="controls">
+						        {{ form.decksize (size=6, class_='decksize-field controls', placeholder="Deck Size") }}
+
+						      </div>
+						      	{% for error in form.errors.decksize %}
+        							<div class="errorDiv"><span for="decksize" class="error">{{error}}</span></div>
+        						{% endfor %}
+						    </div>
+							<div class="control-group">
+						      <label class="control-label" for="resourcesInDeck">Resources</label>
+						      <div class="controls">
+						        {{ form.resourcesInDeck (size=6, class_='resourcesInDeck-field controls', placeholder="Resources") }}
+						      </div>
+						    	{% for error in form.errors.resourcesInDeck %}
+        						<div class="errorDiv"><span for="resourcesInDeck" class="error">{{error}}</span></div>
+        						{% endfor %}
+						    </div>
+						    <div class="control-group">
+						    <div class="controls">
+						    <div id="resource-types-set">
+						    
+						    	
+						    </div>
+						    {% for error in form.errors.resource_types %}
+						    	{% for err in error %} 
+        						<div class="dynamic-errorDiv"><span for="resource_types" class="error">{{err}}</span></div>
+        						{% endfor %}
+        					{% endfor %}
+        					{% for error in form.errors.resource_types_names %}
+        						{% for err in error %}
+        						<div class="dynamic-errorDiv"><span for="resource_types_names" class="error">{{err}}</span></div>
+        						{% endfor %}
+        					{% endfor %}
+						    <label class="control-label"></label><button class="controls btn" type="button" id="more-button">Multi-Colour&hellip;</button>
+
+
+        					</div>
+
+						   	</div>
+						    
+							<div class="control-group">
+						      <label class="control-label" for="turns">Turns</label>
+						      <div class="controls">
+						        {{ form.turns (size=6, class_='turns-field controls', placeholder="Turns") }}
+						      </div>
+						      						        {% for error in form.errors.turns %}
+        							<div class="errorDiv"><span for="turns" class="error">{{error}}</span></div>
+        						{% endfor %}
+						    </div>
+							<div class="control-group">
+						      <label class="control-label" for="turn_one_draw">First Turn Draw</label>
+						      <div class="controls">
+						        {{ form.turn_one_draw (size=6, class_='turn_one_draw-field controls', placeholder="First Turn Draw") }}
+						      </div>
+								{% for error in form.errors.turn_one_draw %}
+        						<div class="errorDiv"><span for="turn_one_draw" class="error">{{error}}</span></div>
+        						{% endfor %}
+						    </div>
+						    <div class="control-group">
+						      <label class="control-label" for="accumulate">Accumulate</label>
+						      <div class="controls">
+						        {{ form.accumulate (class_='accumulate-field controls') }}
+						        <span id="accumulate-help"><strong>[?]</strong></span>
+						        {% for error in form.errors.accumulate %}
+        							<div><span for="accumulate" class="error">{{error}}</span></div>
+        						{% endfor %}
+						      </div>
+						    </div>
+						    <div class="control-group">
+						      <label class="control-label" for="accumulate">Eliminate Unplayable</label>
+						      <div class="controls">
+						        {{ form.elim_unplayable (class_='elim_unplayable-field controls') }}
+						        <span id="elim_unplayable-help"><strong>[?]</strong></span>
+						        {% for error in form.errors.elim_unplayable %}
+        							<div><span for="elim_unplayable" class="error">{{error}}</span></div>
+        						{% endfor %}
+						      </div>
+						    </div>
+						</fieldset>
+						<button type="submit" class="button btn btn-warning btn-large">Calculate</button>
+					</form>
+					</div> <!-- /widget-content -->
+			
+				</div> <!-- /widget -->
+
+			</div>
+			      		<div class="span6">
+	    	{% for snippet in snippets %}
+				
+			<div class="widget stacked widget-box">
+				
+				<div class="widget-header">	
+				{{ snippet.title | safe }}			
+				</div> <!-- /widget-header -->
+				
+				<div class="widget-content">
+					
+					{{ snippet.body | safe }}	
+					
+				</div> <!-- /widget-content -->
+				
+			</div> <!-- /widget -->
+			
+			{% endfor %}</div>
+			</div>
+
+			{% if table %}
+			<a name="results"></a>
+			<div class="row">
+			<div class="span12">
+			<div class="widget stacked">
+			<div class="widget-header">
+      				<i class="icon-list-alt"></i>
+      				<h3>Results</h3>
+  				</div>
+  				<div class="widget-content">
+  			
+			<table class="table table-bordered table-striped table-highlight">
+						        <thead>
+						        <tr>
+						        	<th></th>
+						        	<th style="text-align: center;" colspan="{{table.lastempty+1}}">Resources and Threshold</th>
+						        </tr>
+						        <tr>
+						        {% for row in table.header %}
+						        {% if loop.index <= table.lastempty+2 %} 
+						            <th>{{ row }}</th>
+						        {% endif %}
+						        {% endfor %}
+						        </tr>
+						        </thead>
+						        <tbody style="font-size:smaller">
+						        {% for row in table.data %}
+						        {% set row_number = loop.index %}
+						        {% set grey = loop.cycle(249,255) %}
+						          <tr>
+						          	{% for element in row %}
+						          	{% if loop.index <= table.lastempty+2 %}
+						          	{% if element == row[0] %}
+						          	<td style="padding:1px;">{% for word in element %}{{word}}<br />{% endfor %}</td>
+						          	{% else %}
+						          	{% set color = ((249 * (((element[0]|float) * (table.max|int))/100))|int) %}
+						          	{% if form.elim_unplayable.data and loop.index-2 > row_number %}
+						          	<td style="padding:1px;background-color:rgb({{ grey }}, {{ grey }} , {{ grey }})"></td>
+						          	{% else %}
+						            <td style="padding:1px;background-color:rgb({{ grey - color }}, {{ grey }} , {{ grey - color }})">
+						            {% for data in element %}{% if loop.index == 1 %}<strong>{% endif %}
+						            {% if ("%.1f%%"|format(data|float)) != '0.0%' %}{{ ("%.1f%%"|format(data|float)) }}{% endif %}<br />
+						            {% if loop.index == 1 %}</strong>{% endif %}{% endfor %}
+						            </td>
+						            {% endif %}
+						            {% endif %}
+						            {% endif %}
+						            {% endfor %}
+						          </tr>
+						        
+						        {% endfor %}
+						        </tbody>
+						      </table>
+						      {% if link %}
+						      Link for this table: <a href="{{ url_for('ToolsView:resourceLink', string=link)}}#results">http://hexmetrics.ni.tl{{ url_for('ToolsView:resourceLink', string=link)}}#results</a>
+						      {% endif %}
+			</div>
+			      			
+			</div>
+			</div>
+			
+		</div>
+					{% endif %}
+	</div>
+</div>
+{%- endblock %}
+
+{% block javascript %}
+{{ super() }}
+
+<script>
+$i = 0;
+$clicked = 0;
+
+$("#more-button").click(function () {
+	if ($clicked == 1) return;
+	$("#more-button").text("More")
+	$("#resourcesInDeck").attr('disabled', 'disabled');
+	$clicked = 1;
+	if ($i < 5) {
+		$i++;
+		$valToAppend = '<div class="control-group" id="cntrl-grp-'+$i+'"><label class="control-label"></label><div class="controls controls-row"><input type="text" class="span1 resource_types" name="resource_types-'+$i+'" id="resource_types-'+$i+'">&nbsp;<div class="input-append"><select class="span2" id="resource_types_names-'+$i+'" name="resource_types_names-'+$i+'"><option>Wild</option><option>Blood</option><option>Ruby</option><option>Diamond</option><option>Sapphire</option></select><button class="btn btn-danger" type="button" id="del-button-'+$i+'">Del</button></div></div></div>';
+		$("#resource-types-set").append($valToAppend);
+		$("#del-button-"+$i).click(function () { $(this).parent().parent().parent().remove(); $i--; if($i == 0) {$('#resourcesInDeck').removeAttr('disabled');$("#more-button").html("Multi-Colour&hellip;");}});
+	}
+	
+	$(".resource_types").change(function () {
+		$totalRes = 0
+		$(".resource_types").each( function() {
+			if (isNaN(parseInt($(this).val())) != true)
+				$totalRes += parseInt($(this).val());
+		});
+		$("#resourcesInDeck").val($totalRes)
+	});
+	
+	$clicked = 0;
+});
+
+{% for resource_types in form.resource_types %}
+$("#more-button").click();
+$("#resource_types-{{ loop.index }}").val("{{ resource_types.data }}")
+$("#resource_types_names-{{ loop.index }}").val("{{ form.resource_types_names[loop.index-1].data }}")
+{% endfor %}
+
+$("#resources-form").submit( function () {
+	$('#resourcesInDeck').removeAttr('disabled');	
+});
+
+$(document).ready ( function () {
+	$("#accumulate-help").click ( function () {
+		$.msgbox("This option will give you a cumulative total, changing the behaviour from 'Chance of <em>exactly x</em> resources' to 'Chance of at <em>least x</em> resources' ", {type: "info"});
+	});
+	$("#elim_unplayable-help").click ( function () {
+		$.msgbox("This option will eliminate entries from the table you cannot play because of the <em>one resource per turn</em> rule.<br />It is probably only useful with <em>Accumulate</em> also selected.", {type: "info"});
+	});
+});
+
+</script>
+
+{% endblock %}

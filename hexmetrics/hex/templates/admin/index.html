@@ -1,0 +1,14 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+{% if current_user.is_anonymous() %}
+	<p>Welcome to the Admin page - administrators should logon <a href="{{ url_for('LoginView:index') }}?next={{ url_for(request.endpoint) }}">here</a> first.</p>
+{% else %}
+	{% if current_user.is_admin() %}
+		<p>You are logged in as {{ current_user.displayname }} ({{ current_user.username }})</p>
+	{% else %}
+		<p>You are logged in as {{ current_user.displayname }} ({{ current_user.username }}), which is not an Administrator.</p>
+		<p>Administrators should <a href="{{ url_for('LoginView:logout') }}?next={{ url_for(request.endpoint) }}">logout</a> and log back in first.</p> 
+	{% endif %}
+{% endif %}
+{% endblock %}

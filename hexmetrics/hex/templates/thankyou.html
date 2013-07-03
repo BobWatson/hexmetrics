@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	
+	<div class="row">
+		
+		<div class="span12">
+			
+			<div class="error-container">
+				<h1>Thank You!</h1>
+				
+				<h2>You have successfully registered with HEX Metrics.</h2>
+				
+				<div class="error-details">
+					An email has been sent to the address you nominated {{ session['email'] }}, which contains instructions on how to confirm your account.
+					
+				</div> <!-- /error-details -->
+				
+				<div class="error-actions">
+					<a href="{{ url_for('IndexView:index') }}" class="btn btn-large btn-primary">
+						<i class="icon-chevron-left"></i>
+						&nbsp;
+						Back to Front						
+					</a>
+					
+					<a href="./faq.html" class="btn btn-large">
+						<i class="icon-envelope"></i>
+						&nbsp;
+						Contact Support						
+					</a>
+					
+				</div> <!-- /error-actions -->
+							
+			</div> <!-- /error-container -->			
+			
+		</div> <!-- /span12 -->
+		
+	</div> <!-- /row -->
+	
+</div> <!-- /container -->
+{% endblock %}

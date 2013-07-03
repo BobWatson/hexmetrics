@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="account-container register stacked">
+	
+	<div class="content clearfix">
+		
+		<form action="{{ url_for('RegisterView:post') }}" method="post">
+		{{form.hidden_tag()}}
+			<h1>Create Your Account</h1>	
+			{% for error in form.errors.csrf_token %}
+        		<div class="control-group"><span class="error">{{error}}</span></div>
+        	{% endfor %}	
+			
+			<div class="login-fields">
+				
+				<p>Create your free account:</p>
+				
+				<div class="field control-group">
+					<label for="username">Username:</label>
+					{{form.username(size=80, class_='login user-field controls', placeholder="Username")}}
+					{% for error in form.errors.username %}
+        				<div><span for="username" class="error">{{error}}</span></div>
+        			{% endfor %}
+				</div> <!-- /field -->
+				
+				<div class="field control-group">
+					<label for="realname">Real Name:</label>	
+					{{form.realname(size=80, class_='login realname-field controls', placeholder="Real Name")}}
+					{% for error in form.errors.realname %}
+        				<div><span for="realname" class="error">{{error}}</span></div>
+        			{% endfor %}
+				</div> <!-- /field -->
+				
+				
+				<div class="field control-group">
+					<label for="email">Email Address:</label>
+					{{form.email(size=80, class_='login email-field controls', placeholder="Email Address")}}
+					{% for error in form.errors.email %}
+        				<div><span for="email" class="error">{{error}}</span></div>
+        			{% endfor %}
+				</div> <!-- /field -->
+				
+				<div class="field control-group">
+					<label for="password">Password:</label>
+					{{form.password(size=80, class_='login pass-field controls', placeholder="Password")}}
+					{% for error in form.errors.password %}
+        				<div><span for="password" class="error">{{error}}</span></div>
+        			{% endfor %}
+				</div> <!-- /field -->
+				
+				<div class="field control-group">
+					<label for="confirm">Confirm Password:</label>
+					{{form.confirm(size=80, class_='login confirm-field controls', placeholder="Confirm Password")}}
+					{% for error in form.errors.confirm %}
+        				<div><span for="confirm" class="error">{{error}}</span></div>
+        			{% endfor %}
+				</div> <!-- /field -->
+				
+			</div> <!-- /login-fields -->
+			
+			<div class="login-actions control-group">
+				
+				<span class="login-checkbox">
+					{{form.havereadtos}}
+					<label class="choice" for="havereadtos">I have read and agree with the Terms of Use.</label>
+				</span>
+									
+				<button type="submit" class="button btn btn-primary btn-large">Register</button>
+				
+			{% for error in form.errors.havereadtos %}
+			<div class="control-group">
+        		<div><span for="havereadtos" class="error">{{error}}</span></div>
+        	</div>
+        	{% endfor %}
+
+			</div> <!-- .actions -->
+			
+
+			
+		</form>
+		
+	</div> <!-- /content -->
+	
+</div> <!-- /account-container -->
+
+
+<!-- Text Under Box -->
+<div class="login-extra">
+	Already have an account? <a href="{{ url_for('LoginView:index') }}{% if request.args.get('destpage') %}?next={{ request.args.get('destpage') }}{% endif %}">Login</a>
+</div> <!-- /login-extra -->
+{% endblock %}
+
