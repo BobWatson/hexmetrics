@@ -1,11 +1,8 @@
-from flask import Flask, url_for, render_template, flash, redirect, Response, make_response, request
-from flask.ext.classy import FlaskView, route
+from flask import url_for, render_template, redirect, make_response
 from math import factorial
 
-from flask.ext.wtf import Form, TextField, BooleanField, IntegerField, HiddenField
-from flask.ext.wtf import Required, ValidationError, FieldList, Optional, SelectField
-
-from flask.ext.login import login_user, logout_user, current_user, login_required
+from flask.ext.wtf import Form, BooleanField, IntegerField
+from flask.ext.wtf import Required, FieldList,  SelectField
 
 def RepresentsInt(s):
     try: 
@@ -25,7 +22,7 @@ class ResourceForm(Form):
     turns = IntegerField('turns', validators = [Required()], default = 30)
     turn_one_draw = IntegerField('turn_one_draw', validators = [Required()], default = 7)
     resource_types = FieldList(IntegerField("resource_types",validators = [Required()]), min_entries=0, max_entries=5)
-    resource_types_names = FieldList(SelectField("resource_types_names",validators = [Required()], choices = [('Wild', 'Wild'),('Blood','Blood'), ('Ruby','Ruby'), ('Diamond','Diamond'), ('Sapphire','Sapphire')]), min_entries=0, max_entries=5)
+    resource_types_names = FieldList(SelectField("resource_types_names",validators = [Required()], choices = [('Blood','Blood'), ('Diamond','Diamond'), ('Ruby','Ruby'), ('Sapphire','Sapphire'), ('Wild', 'Wild')]), min_entries=0, max_entries=5)
     accumulate = BooleanField('accumulate')
     elim_unplayable = BooleanField('elim_unplayable')
     
@@ -79,7 +76,7 @@ class ResourceCalculator():
             data = []
             
             d = ['%s' % (turn-turn_one_draw+1)]
-            for type in types:
+            for single_type in types:
                 d.append(type['name'])
             
             data.append(d)
@@ -110,11 +107,11 @@ class ResourceCalculator():
                 if ('%.1f%%' % float(H*100)) != '0.0%':
                     lastempty = ind;
                 
-                for type in types:
+                for single_type in types:
                     if (turn-res) < 0:
                         H = 0
                     else:
-                        H = C(type['num'], res)*C((decksize - type['num']), (turn-res))/float(C(decksize,turn))
+                        H = C(single_type['num'], res)*C((decksize - single_type['num']), (turn-res))/float(C(decksize,turn))
                         
                     d.append(float(H*100))
                     

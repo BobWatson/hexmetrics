@@ -6,7 +6,7 @@
     <title>{% block title %}{% endblock %} :: HEX Metrics</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">    
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico">
     <link href="/static/theme/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -256,11 +256,15 @@
 <script src="/static/theme/js/plugins/flot/jquery.flot.orderBars.js"></script>
 <script src="/static/theme/js/plugins/flot/jquery.flot.resize.js"></script>
 <script src="/static/theme/js/Application.js"></script>
+<script src="{{ url_for('static', filename="js/oauth.min.js")}}"></script>
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
  <script>
- $(document).ready (function () {
+$(document).ready (function () {
+OAuth.initialize('iapxi3rMuocKDqKwsHhBJEGkdoA');
+{% block javascript_code %}
+{% endblock %}
  {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}

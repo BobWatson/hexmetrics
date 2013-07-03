@@ -45,7 +45,16 @@
 									
 				<button type="submit" class="button btn btn-warning btn-large">Sign In</button>
 				
-			</div> <!-- .actions -->			
+			</div> <!-- .actions -->
+{# 
+<div class="login-social" style="width:100%;">
+				<p>Sign in using social network:</p>
+				
+				<img src="{{ url_for('static', filename='img/twitter.png') }}" style='width:42px; height:42px;' id="twitter-logon-button" alt="Logon with Twitter">
+				<img src="{{ url_for('static', filename='img/facebook.png') }}" style='width:42px; height:42px;' id="facebook-logon-button" alt="Logon with Facebook">
+				<img src="{{ url_for('static', filename='img/google-plus.png') }}" style='width:42px; height:42px;' id="google_plus-logon-button" alt="Logon with Google+">
+			</div>
+#}
 		</form>
 		
 	</div> <!-- /content -->
@@ -59,4 +68,19 @@
 	Remind <a href="#">Password</a>
 </div> <!-- /login-extra -->
 {% endblock %}
+{#
+{% block javascript_code %}
+$("#twitter-logon-button").click( function () {
+	OAuth.popup('twitter', function(error, result) {
+  	if (error) {
+  		alert('Error');
+  	} else {
+  		alert('Success');
+  	}
+  		console.log(result)
+  		alert(result.data.oauth_token)
+	});
+})
+{% endblock %}
+#}
     
