@@ -1,13 +1,13 @@
 import random, string
 
-from flask import Flask, url_for, render_template, flash, redirect, Response, make_response, request, session
+from flask import url_for, render_template, flash, redirect, make_response, request
 from flask.ext.classy import FlaskView, route
 
 from flask.ext.wtf import Form, TextField, BooleanField, PasswordField, HiddenField
-from flask.ext.wtf import Required, ValidationError
+from flask.ext.wtf import Required
 from flask.ext.wtf import EqualTo, Email
 
-from flask.ext.login import login_user, logout_user, current_user, login_required
+from flask.ext.login import login_user
 
 from main import db, app
 
@@ -38,18 +38,48 @@ class RegisterForm(Form):
             newUser = User(username=self.username.data, email=self.email.data, password=self.password.data, realname=self.realname.data, role=ROLE_USER)
             key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
             newUser.signUpDetails.append(UserSignupDetails(signupKey=key, destPage=self.destpage.data))
+
+            mailDetails = {'from': app.config['EMAIL_FROM'],
+                           'from_name': app.config['EMAIL_FROM_NAME'],
+                           'to': [newUser.email],
+                           'bcc': app.config['EMAIL_ADMINS'],
+                           'subject': "Thank you for signing up at HEX Metrics.",
+                           'text': "Thank you for signing up at HEX Metrics.\n\nPlease use the following URL to confirm your account: http://{u}/register/c/{k}".format(k=key,u=app.config['SERVER_NAME']),
+                           
+                           }
+
+            try:
+                requests.post(
+                              app.config['EMAIL_MAILGUN_API_URL'],
+                              auth=("api", app.config['EMAIL_MAILGUN_API_KEY']),
+                              data={"from": '%s <%s>' % (mailDetails['from_name'], mailDetails['from']),
+                                    "to": mailDetails['to'],
+                                    "bcc": mailDetails['bcc'],
+                                    "subject": mailDetails['subject'],
+                                    "text": mailDetails['text']
+                                    })
+            except:
+                try:
+                    import smtplib
+                    smtpObj = smtplib.SMTP(app.config['EMAIL_SMTP_SERVER'],587)
+                    msg = "From: %s <%s>\r\n" % (mailDetails['from_name'], mailDetails['from']) \
+                        + "To: %s\r\n" % mailDetails['to']                                      \
+                        + "Bcc: %s\r\n" % ','.join(app.config['EMAIL_ADMINS'])                  \
+                        + "Subject: %s\r\n" % (mailDetails['subject'])                          \
+                        + "\r\n%s" % mailDetails['text']
+                    smtpObj.set_debuglevel(1)
+                    print msg
+                    smtpObj.login(app.config['EMAIL_SMTP_USER'], app.config['EMAIL_SMTP_PASS'])
+                    smtpObj.sendmail(app.config['EMAIL_FROM'], [mailDetails['to']] + app.config['EMAIL_ADMINS'], msg)
+                    smtpObj.quit()
+                    
+                except:
+                    
+                    self.email.errors.append('Unable to send email!')
+                    return False
+                
             db.session.add(newUser)
             db.session.commit()
-
-            requests.post(
-                          app.config['EMAIL_MAILGUN_API_URL'],
-                          auth=("api", app.config['EMAIL_MAILGUN_API_KEY']),
-                          data={"from": app.config['EMAIL_FROM'],
-                                "to": [newUser.email],
-                                "bcc": app.config['EMAIL_ADMINS'],
-                                "subject": "Thank you for signing up at HEX Metrics.",
-                                "text": "Thank you for signing up at HEX Metrics.\n\nPlease use the following URL to confirm your account: http://{u}/register/c/{k}".format(k=key,u=app.config['SERVER_NAME'])
-                                })
 
         return superVal and customVal
         
@@ -80,5 +110,6 @@ class RegisterView(FlaskView):
         db.session.add(user)
         db.session.commit()
         login_user(user)
+        flash(u'Your account is now active.<br />Please log in.', 'success')
         if details is not None:
             return redirect(details.destPage or url_for('IndexView:index'))
