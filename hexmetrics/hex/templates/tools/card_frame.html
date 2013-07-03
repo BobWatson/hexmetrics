@@ -1,0 +1,75 @@
+<html>
+<head>
+<style>
+body, html {
+	background-color:#000;
+	margin:0;
+	padding:0;
+}
+
+#container {
+	width:230px;
+	height:340px;
+	border:1px solid #333;
+	color:#ccc;
+	font-family: sans-serif;
+	margin:0;
+	padding:0;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:10px;
+}
+
+a, a:link, a:visited {
+	text-decoration:none;
+	color: #fff;
+	font-weight:bold;
+}
+
+hr {
+	border:0;
+	height:1px;
+	width: 80%;
+	color: #777;
+	background-color: #777;
+}
+
+div {
+	padding:3px;
+	font-size:smaller;
+}
+
+#credit {
+	position: absolute; bottom: 0; right: 0;
+	text-align:right;
+	font-size:smaller;
+}
+
+#card-name {
+	font-size: larger;
+	font-weight:bold;
+}
+
+#card-cost img {
+	margin:0;
+	padding:0;
+}
+</style>
+</head>
+<body>
+<div id="container">
+{% if card.name %}
+<div id="card-name">{{ card.name|safe }}</div>
+<div id="card-shard">Shard: {{ card.colour|safe }}</div>
+<div id="card-cost">Cost: {{ card.cost|safe }} {% if card.threshold_icons %}({{ card.threshold_icons|safe }}){% endif %}</div>
+<div id="card-type">Type: {{ card.card_type|safe }}</div>
+<div id="card-rarity">Rarity: {{ card.rarity|safe }}</div>
+<hr />
+<div id="card-desc">{{ card.description|safe }}</div>
+{% else %}
+<div id="card-name">Card Not Found</div>
+{% endif %}
+<div id="credit">Credit: <a href="http://hextcg.gamepedia.com/">HEX Wiki</a> (hextcg.gamepedia.com)</div>
+</div>
+</body>
+</html>

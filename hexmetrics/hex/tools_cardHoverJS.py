@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import urllib2
 import re
+from main import db
 
 class CardLibrary():
     
@@ -20,12 +21,26 @@ class CardLibrary():
             
             for tr in table.find_all('tr'):
                 row = []
+                cell_num = 0
                 for td in tr.find_all('td'):
                     row_contents = '%s' % re.sub(r'<td.*?>', r'', td.prettify())
                     row_contents = '%s' % re.sub(r'</td>', r'', row_contents)
-                    row_contents = re.sub(r'(<a href=")/(.*?".*?>)', r'\1%s\2'%rebase_url, row_contents)
+                    row_contents = re.sub(r'(<a.*?href=")/(.*?".*?>)', r'\1%s\2'%rebase_url, row_contents)
+                    if cell_num == 0:
+                        row_contents = row_contents.replace('href', 'class="hex-card" href')
                     row_contents = re.sub(r'(<img .*? src=").*(/.*?".*?>)', r'\1%s\2'%rebase_img_url, row_contents)
+                    row_contents = row_contents.strip()
                     row.append(row_contents)
-                    print row_contents
+                    cell_num = cell_num + 1
                 if len(row) > 0:
                     self.cardtable['cards'].append(row)
+
+    def commitTable(self):
+        from models import Cards
+        for card in self.cardtable['cards']:
+            soup = BeautifulSoup(card[0], 'html5lib')
+            name = soup.find('a').get_text().strip()
+            url = soup.find('a')['href'].strip()
+            c = Cards(name=name,colour=card[1],cost=card[2],card_type=card[3],threshold_icons=card[4],rarity=card[5],description=card[6],url=url)
+            db.session.add(c)
+        db.session.commit()

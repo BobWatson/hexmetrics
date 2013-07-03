@@ -142,3 +142,29 @@ class SnippetLibrary(db.Model):
     
     def __repr__ (self):
         return self.name;
+    
+class Cards(db.Model):
+    __tablename__ = 'cards' if (TABLE_PREFIX == '') else '%s_cards' % TABLE_PREFIX
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.UnicodeText)
+    colour = db.Column(db.Unicode(80))
+    cost = db.Column(db.Integer)
+    card_type = db.Column(db.Unicode(80))
+    threshold_icons = db.Column(db.UnicodeText)
+    rarity = db.Column(db.Unicode(80))
+    description = db.Column(db.UnicodeText)
+    url = db.Column(db.UnicodeText)
+    
+    def __init__ (self, name='',colour='',cost='',card_type='',threshold_icons='',rarity='',description='',url=''):
+        self.name = name
+        self.colour = colour
+        self.cost = cost
+        self.card_type = card_type
+        self.threshold_icons = threshold_icons
+        self.rarity = rarity
+        self.description = description
+        self.url = url
+        
+    def __repr__ (self):
+        return self.name;

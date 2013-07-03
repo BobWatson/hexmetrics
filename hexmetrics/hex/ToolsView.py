@@ -49,3 +49,10 @@ class ToolsView(FlaskView):
         from tools_cardHoverJS import CardLibrary
         cl = CardLibrary('http://hexmetrics.ni.tl/static/all_cards.html', rebase_url='http://hextcg.gamepedia.com/', rebase_img_url=url_for('static', filename='img/card-icons'))
         return render_template('tools/card_hover_js.html', table=cl.cardtable)
+    
+    @route('cardJSFrame')
+    def getSingleCardFrame(self):
+        url = request.args.get('url')
+        from models import Cards
+        card = Cards.query.filter_by(url = url).first() 
+        return render_template('tools/card_frame.html', card=card)

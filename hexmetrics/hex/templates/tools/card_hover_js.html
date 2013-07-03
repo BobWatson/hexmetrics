@@ -36,3 +36,31 @@
 </div>
 </div>
 {% endblock %}
+{% block javascript_code %}
+
+$("body").append('<iframe scrolling="no" style="display:none;width:250px;height:350px;background-color:white;overflow:hidden;border:none" id="hex-cards-box"></iframe>')
+
+$("a.hex-card").each(function () {
+	$(this).append('!')
+	$(this).hover( function (e) {
+		$a_ref = $(this);
+		$this = $(this);
+        $.data(this, 'title', $this.attr('title'));
+        $this.removeAttr('title');
+		$(document).bind('mousemove', function(e){
+	    	$('#hex-cards-box').offset({left:e.pageX+20,top:e.pageY+10});
+		});
+		
+		$("#hex-cards-box").fadeIn(500)
+		$("#hex-cards-box").ready(function () {
+			$("#hex-cards-box").prop("src", '{{ url_for ('ToolsView:getSingleCardFrame') }}?url='+$a_ref.prop('href'));
+		});
+		
+	}, function () {
+		$("#hex-cards-box").fadeOut(100)
+		$this = $(this);
+        $this.attr('title', $this.data('title'));
+	});
+});
+
+{% endblock %}
