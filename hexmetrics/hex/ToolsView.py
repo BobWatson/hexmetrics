@@ -44,4 +44,8 @@ class ToolsView(FlaskView):
         snippets = Snippets.getSnippetsForPage('ToolsView:resourceDraw')
         return ResourceCalculator.urlFromResourceLink(string, snippets)
         
-    
+    @route('cardJS')
+    def cardJS(self):
+        from tools_cardHoverJS import CardLibrary
+        cl = CardLibrary('http://hexmetrics.ni.tl/static/all_cards.html', rebase_url='http://hextcg.gamepedia.com/', rebase_img_url=url_for('static', filename='img/card-icons'))
+        return render_template('tools/card_hover_js.html', table=cl.cardtable)

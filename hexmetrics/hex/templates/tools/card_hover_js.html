@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="main">
+<div class="container">
+<div class="row">
+<div class="span12">
+<div class="widget stacked">
+<div class="widget-header">
+<i class="icon-list-alt"></i>
+<h3>Results</h3>
+</div>
+<div class="widget-content">
+<table class="table table-bordered table-striped table-highlight">
+	<thead>
+	<tr>
+	{% for heading in table['headers'] %}
+	<th>{{ heading }}</th>
+	{% endfor %}
+	</tr>
+	</thead>
+	<tbody>
+	{% for row in table['cards'] %}
+	<tr>
+		{% for item in row %}
+		<td>{{ item|safe }}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
