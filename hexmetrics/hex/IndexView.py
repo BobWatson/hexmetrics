@@ -14,3 +14,7 @@ class IndexView(FlaskView):
     @route('/favicon.ico')
     def favicon(self):
         return redirect(url_for('static', filename='favicon.ico'))
+
+    @route('page/<snippet_name>')
+    def pageForSnippetName(self, snippet_name):
+        return render_template('basic.html',snippet=Snippets.getSnippetByName(snippet_name));
