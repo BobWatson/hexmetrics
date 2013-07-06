@@ -37,10 +37,18 @@ class CardLibrary():
 
     def commitTable(self):
         from models import Cards
+        Cards.query.delete()
         for card in self.cardtable['cards']:
             soup = BeautifulSoup(card[0], 'html5lib')
             name = soup.find('a').get_text().strip()
             url = soup.find('a')['href'].strip()
-            c = Cards(name=name,colour=card[1],cost=card[2],card_type=card[3],threshold_icons=card[4],rarity=card[5],description=card[6],url=url)
+            img_url = ''
+            response = urllib2.urlopen(url)
+            html = response.read()
+            soup = BeautifulSoup(html, 'html5lib')
+            for infobox in soup.find_all('table', 'infobox'):
+                if infobox.img is not None:
+                    img_url = infobox.img['src']
+            c = Cards(name=name,colour=card[1],cost=card[2],card_type=card[3],threshold_icons=card[4],rarity=card[5],description=card[6],url=url, img_url=img_url)
             db.session.add(c)
         db.session.commit()

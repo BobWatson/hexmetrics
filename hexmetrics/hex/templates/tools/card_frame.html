@@ -18,7 +18,12 @@ body, html {
 	padding-left:10px;
 	padding-right:10px;
 	padding-top:10px;
+	background-size: cover;
+	{% if card.img_url %}
+	background-image: url('{{ card.img_url }}')
+	{% else %}
 	background-image: url('/static/img/Hex-Card-Template-Blank.png')
+	{% endif %}
 }
 
 a, a:link, a:visited {
@@ -43,8 +48,9 @@ div {
 #credit {
 	text-align:right;
 	font-size:smaller;
-	position: absolute; top: 180px; left: 16px;
+	position: absolute; top: 350px; left: 29px;
 	width:215px;
+	height:30px;
 }
 
 #card-name {
@@ -104,16 +110,19 @@ height:85px;
 </head>
 <body>
 <div id="container">
-{% if card.name %}
-<div id="card-name">{{ card.name|safe }}</div>
-<div id="card-shard">Shard: {{ card.colour|safe }}</div>
-<div id="card-cost">{{ card.cost|safe }}</div>
-<div id="card-threshold">{% if card.threshold_icons %}{{ card.threshold_icons|safe }}{% endif %}</div>
-<div id="card-type">{{ card.card_type|safe }}</div>
-<div id="card-rarity">{{ card.rarity|safe }}</div>
-<div id="card-desc">{{ card.description|safe }}</div>
+{% if card.img_url %}
 {% else %}
-<div id="card-name">Card Not Found</div>
+	{% if card.name %}
+	<div id="card-name">{{ card.name|safe }}</div>
+	<div id="card-shard">Shard: {{ card.colour|safe }}</div>
+	<div id="card-cost">{{ card.cost|safe }}</div>
+	<div id="card-threshold">{% if card.threshold_icons %}{{ card.threshold_icons|safe }}{% endif %}</div>
+	<div id="card-type">{{ card.card_type|safe }}</div>
+	<div id="card-rarity">{{ card.rarity|safe }}</div>
+	<div id="card-desc">{{ card.description|safe }}</div>
+	{% else %}
+	<div id="card-name">Card Not Found</div>
+	{% endif %}
 {% endif %}
 <div id="credit">Data: <a href="http://hextcg.gamepedia.com/">HEX Wiki</a> (hextcg.gamepedia.com)<br />
 Card Hover: <a href="http://hextcg.gamepedia.com/">HEX Metrics</a> (hexmetrics.ni.tl)</div>

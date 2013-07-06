@@ -155,8 +155,9 @@ class Cards(db.Model):
     rarity = db.Column(db.Unicode(80))
     description = db.Column(db.UnicodeText)
     url = db.Column(db.UnicodeText)
+    img_url = db.Column(db.UnicodeText)
     
-    def __init__ (self, name='',colour='',cost='',card_type='',threshold_icons='',rarity='',description='',url=''):
+    def __init__ (self, name='',colour='',cost='',card_type='',threshold_icons='',rarity='',description='',url='', img_url=''):
         self.name = name
         self.colour = colour
         self.cost = cost
@@ -165,6 +166,7 @@ class Cards(db.Model):
         self.rarity = rarity
         self.description = description
         self.url = url
+        self.img_url = img_url
         
     def __repr__ (self):
         return self.name;
