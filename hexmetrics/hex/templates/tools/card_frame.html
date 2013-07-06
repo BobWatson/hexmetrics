@@ -20,7 +20,7 @@ body, html {
 	padding-top:10px;
 	background-size: cover;
 	{% if card.img_url %}
-	background-image: url('{{ card.img_url }}')
+	background-image: url('{{ url_for('IndexView:returnCachedFile') }}?url={{ card.img_url }}')
 	{% else %}
 	background-image: url('/static/img/Hex-Card-Template-Blank.png')
 	{% endif %}
@@ -48,7 +48,7 @@ div {
 #credit {
 	text-align:right;
 	font-size:smaller;
-	position: absolute; top: 350px; left: 29px;
+	position: absolute; bottom: 0px; left: 29px;
 	width:215px;
 	height:30px;
 }

@@ -13,12 +13,12 @@ $(document).ready (function () {
 	
 	$('#hex-cards-box iframe').ready( function () {
 		$('#hex-cards-box').css('width', '251px');
-		$('#hex-cards-box').css('height', '371px');
+		$('#hex-cards-box').css('height', '386px');
 		$('#hex-cards-box').css('margin', '0');
 		$('#hex-cards-box').css('padding', '0');
 		
 		$('#hex-cards-box iframe').css('width', '250px');
-		$('#hex-cards-box iframe').css('height', '370px');
+		$('#hex-cards-box iframe').css('height', '385px');
 		$('#hex-cards-box iframe').css('overflow', 'hidden');
 		$('#hex-cards-box iframe').css('border', 'none');
 		$('#hex-cards-box iframe').css('margin', '0');
