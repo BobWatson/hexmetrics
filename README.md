@@ -12,10 +12,11 @@ Using
 -----
 
 To get started: 
-1. Copy config.default.py to config.py, edit that file and fill in all your pertinant details.
-2. Run 'python db_create.py'
-3. Run 'python db_migrate.py'
-4. Run 'build_card_db.py'
+
+1.  Copy config.default.py to config.py, edit that file and fill in all your pertinant details.
+2.  Run 'python db_create.py'
+3.  Run 'python db_migrate.py'
+4.  Run 'build_card_db.py'
 
 You should then be able to launch with a basic harness in the root, something like:
 ```python
