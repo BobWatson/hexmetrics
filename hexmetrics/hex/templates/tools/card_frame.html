@@ -18,6 +18,7 @@ body, html {
 	padding-left:10px;
 	padding-right:10px;
 	padding-top:10px;
+	background-image: url('/static/img/Hex-Card-Template-Blank.png')
 }
 
 a, a:link, a:visited {
@@ -40,20 +41,52 @@ div {
 }
 
 #credit {
-	position: absolute; bottom: 0; right: 0;
 	text-align:right;
 	font-size:smaller;
+	position: absolute; top: 180px; left: 16px;
+	width:215px;
 }
 
 #card-name {
-	font-size: larger;
 	font-weight:bold;
+	position: absolute; top: 9px; left: 45px;
 }
 
-#card-cost img {
-	margin:0;
-	padding:0;
+#card-shard {
+	display:none;
 }
+
+#card-cost {
+font-weight:bold;
+position: absolute; top: 8px; left: 15px;
+width:10px;
+text-align:center;
+font-size:larger
+}
+
+#card-threshold {
+position: absolute; top: 40px; left: 4px;
+width:20px;
+height:200px;
+text-align:center;
+}
+
+#card-type {
+font-weight:bold;
+position: absolute; top: 218px; left: 28px;	
+}
+
+#card-desc {
+position: absolute; top: 240px; left: 20px;
+width:200px;
+}
+
+#card-rarity {
+	position: absolute; top: 334px; left: 60px;
+	width:60px;
+	text-align:center;
+}
+
 </style>
 </head>
 <body>
@@ -61,15 +94,16 @@ div {
 {% if card.name %}
 <div id="card-name">{{ card.name|safe }}</div>
 <div id="card-shard">Shard: {{ card.colour|safe }}</div>
-<div id="card-cost">Cost: {{ card.cost|safe }} {% if card.threshold_icons %}({{ card.threshold_icons|safe }}){% endif %}</div>
-<div id="card-type">Type: {{ card.card_type|safe }}</div>
-<div id="card-rarity">Rarity: {{ card.rarity|safe }}</div>
-<hr />
+<div id="card-cost">{{ card.cost|safe }}</div>
+<div id="card-threshold">{% if card.threshold_icons %}{{ card.threshold_icons|safe }}{% endif %}</div>
+<div id="card-type">{{ card.card_type|safe }}</div>
+<div id="card-rarity">{{ card.rarity|safe }}</div>
 <div id="card-desc">{{ card.description|safe }}</div>
 {% else %}
 <div id="card-name">Card Not Found</div>
 {% endif %}
-<div id="credit">Credit: <a href="http://hextcg.gamepedia.com/">HEX Wiki</a> (hextcg.gamepedia.com)</div>
+<div id="credit">Data: <a href="http://hextcg.gamepedia.com/">HEX Wiki</a> (hextcg.gamepedia.com)<br />
+Card Hover: <a href="http://hextcg.gamepedia.com/">HEX Metrics</a> (hexmetrics.ni.tl)</div>
 </div>
 </body>
 </html>

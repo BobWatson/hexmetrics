@@ -4,9 +4,14 @@ $(document).ready (function () {
 	$("body").append('<div style="display:none;" id="hex-cards-box"><iframe scrolling="no" style=""></iframe></div>')
 	
 	$('#hex-cards-box iframe').ready( function () {
+		$('#hex-cards-box').css('width', '250px');
+		$('#hex-cards-box').css('height', '350px');
+		$('#hex-cards-box').css('margin', '0');
+		$('#hex-cards-box').css('padding', '0');
+		$('#hex-cards-box').css('background-color', '#000');
+		
 		$('#hex-cards-box iframe').css('width', '250px');
 		$('#hex-cards-box iframe').css('height', '350px');
-		$('#hex-cards-box iframe').css('background-color', '#000');
 		$('#hex-cards-box iframe').css('overflow', 'hidden');
 		$('#hex-cards-box iframe').css('border', 'none');
 		$('#hex-cards-box iframe').css('margin', '0');
