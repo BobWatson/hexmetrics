@@ -1,9 +1,5 @@
 {% extends "layout.html" %}
 {% block title %}HEX Card Hover Javascript{% endblock %}
-{% block head %}
-{{ super() }}
-<script src="{{ url_for('static', filename='js/hex-card-hover.js') }}"></script>
-{% endblock %}
 {% block content %}
 <div class="main">
 <div class="container">
@@ -20,7 +16,7 @@
 <h3>How Do I Use It?</h3>
 <p>Getting the mouseovers to work is fairly straightforward, first - add the following snippet between your &lt;head> and &lt;/head> tags:
 	<code>
-		&lt;script src="http://hexmetrics.ni.tl/js/hex-card-hover.js">&lt;/script>
+		&lt;script src="http://hexmetrics.ni.tl/static/js/hex-card-hover.js">&lt;/script>
 	</code>
 </p>
 <p>Next, you link to a HEX Wiki card like http://hextcg.gamepedia.com/Phoenix_Guard_Aeronaut and use the class 'hex-card', like so:
@@ -31,8 +27,14 @@
 <p>Now, when someone mouses over your link, you get <a class="hex-card" href="http://hextcg.gamepedia.com/Phoenix_Guard_Aeronaut">Phoenix Guard Aeronaut</a>.</p>
 <h3>Something doesn't work!</h3>
 <p>The tool is currently under active development, if you need further help, please leave a comment below. Additionally, if you can help out with any part of the process, please let me know - there are a couple of glaring omissions at the moment, such as card colours and cart art.</p>
+<p>I'm really interested in feedback on how people are using it; I'm not sure how robust / browser-agnostic / etc. it is at this stage - so if anyone does include it in their pages; please also post below!</p>
 </div>
 </div>
+</div>
+</div>
+
+<div class="row">
+<div class="span12">
 <div class="widget stacked">
       		<div class="widget-header">
 			<i class="icon-pushpin"></i>
