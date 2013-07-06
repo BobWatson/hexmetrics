@@ -52,7 +52,10 @@ class ToolsView(FlaskView):
     
     @route('cardJSFrame')
     def getSingleCardFrame(self):
+        import urllib
         url = request.args.get('url')
+        url = '%s%s' % (url[0:url.rfind('/')],urllib.quote(url[url.rfind('/'):])) 
+        
         from models import Cards
-        card = Cards.query.filter_by(url = url).first() 
+        card = Cards.query.filter(Cards.url.ilike(url)).first() 
         return render_template('tools/card_frame.html', card=card)
