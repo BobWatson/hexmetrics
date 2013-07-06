@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}{{ title }}{% endblock %}
+{% block head %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/hex-card-hover.js') }}"></script>
+{% endblock %}
 {% block content %}
 <div class="main">
 <div class="container">
@@ -35,33 +39,4 @@
 </div>
 </div>
 </div>
-{% endblock %}
-{% block javascript_code %}
-
-$("body").append('<iframe scrolling="no" style="display:none;width:250px;height:350px;background-color:#000;overflow:hidden;border:none" id="hex-cards-box"></iframe>')
-
-$("a.hex-card").each(function () {
-	$(this).append('!')
-	$(this).hover( function (e) {
-		$a_ref = $(this);
-		$this = $(this);
-        $.data(this, 'title', $this.attr('title'));
-        $this.removeAttr('title');
-		$(document).bind('mousemove', function(e){
-	    	$('#hex-cards-box').offset({left:e.pageX+20,top:e.pageY+10});
-		});
-		
-		
-		$("#hex-cards-box").prop("src", '{{ url_for ('ToolsView:getSingleCardFrame') }}?url='+$a_ref.prop('href'));
-		$("#hex-cards-box").load ( function () {
-			$("#hex-cards-box").fadeIn(500)
-		})
-				
-	}, function () {
-		$("#hex-cards-box").fadeOut(100)
-		$this = $(this);
-        $this.attr('title', $this.data('title'));
-	});
-});
-
 {% endblock %}
