@@ -7,7 +7,7 @@ $(document).ready (function () {
 	$(document).mousemove( function(e) {
    		mouseX = e.pageX; 
    		mouseY = e.pageY;
-   		$('#hex-cards-box').offset({left:e.mouseX+20,top:e.pageY+10});
+   		$('#hex-cards-box').offset({left:mouseX+20,top:mouseY+10});
 		if($should_show_hex == false) $("#hex-cards-box").hide();
 	}); 
 	
