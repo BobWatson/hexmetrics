@@ -3,9 +3,11 @@ import os
 
 cl = CardLibrary('http://hextcg.gamepedia.com/List_of_all_cards', rebase_url='http://hextcg.gamepedia.com/', rebase_img_url='http://hexmetrics.ni.tl/static/img/card-icons')
 
-print cl.cardtable['cards'][0]
+print 'CardLibrary Initialised...'
 
 cl.commitTable()
+
+print 'Emptying Cache...'
 
 from config import CACHE_FILE_LOCATION
 
@@ -16,3 +18,5 @@ for the_file in os.listdir(CACHE_FILE_LOCATION):
             os.unlink(file_path)
     except Exception, e:
         print e
+        
+print 'Done.\n'

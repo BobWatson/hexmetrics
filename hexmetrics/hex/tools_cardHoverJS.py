@@ -38,11 +38,18 @@ class CardLibrary():
     def commitTable(self):
         from models import Cards
         Cards.query.delete()
+        i = 0
+        print 'CardLibrary Committing...'
         for card in self.cardtable['cards']:
+            i = i+1
+            
             soup = BeautifulSoup(card[0], 'html5lib')
             name = soup.find('a').get_text().strip()
             url = soup.find('a')['href'].strip()
             img_url = ''
+            
+            print 'Processing %s of %s (%s)...' % (i, len(self.cardtable['cards']), name)
+            
             response = urllib2.urlopen(url)
             html = response.read()
             soup = BeautifulSoup(html, 'html5lib')
@@ -51,4 +58,4 @@ class CardLibrary():
                     img_url = infobox.img['src']
             c = Cards(name=name,colour=card[1],cost=card[2],card_type=card[3],threshold_icons=card[4],rarity=card[5],description=card[6],url=url, img_url=img_url)
             db.session.add(c)
-        db.session.commit()
+            db.session.commit()
