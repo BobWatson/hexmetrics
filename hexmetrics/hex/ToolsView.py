@@ -48,7 +48,7 @@ class ToolsView(FlaskView):
     def cardJS(self):
         #from tools_cardHoverJS import CardLibrary
         #cl = CardLibrary('http://hexmetrics.ni.tl/static/all_cards.html', rebase_url='http://hextcg.gamepedia.com/', rebase_img_url=url_for('static', filename='img/card-icons'))
-        return render_template('tools/card_hover_js.html')
+        return render_template('tools/card_hover_js.html', snippets=Snippets.getSnippetsForPage(request.endpoint))
     
     @route('cardJSFrame')
     def getSingleCardFrame(self):
