@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}{{ title }}{% endblock %}
+{% block title %}HEX Card Hover Javascript{% endblock %}
 {% block head %}
 {{ super() }}
 <script src="{{ url_for('static', filename='js/hex-card-hover.js') }}"></script>
@@ -12,31 +12,68 @@
 <div class="widget stacked">
 <div class="widget-header">
 <i class="icon-list-alt"></i>
-<h3>Results</h3>
+<h3>HEX Card Hover Javascript</h3>
 </div>
 <div class="widget-content">
-<table class="table table-bordered table-striped table-highlight">
-	<thead>
-	<tr>
-	{% for heading in table['headers'] %}
-	<th>{{ heading }}</th>
-	{% endfor %}
-	</tr>
-	</thead>
-	<tbody>
-	{% for row in table['cards'] %}
-	<tr>
-		{% for item in row %}
-		<td>{{ item|safe }}</td>
-		{% endfor %}
-	</tr>
-	{% endfor %}
-	</tbody>
-</table>
+<h3>What is it?</h3>
+<p>The Card Hover javascript is a tool for website owners, so that they can include card tooltips on mouseover, like <a class="hex-card" href="http://hextcg.gamepedia.com/Phoenix_Guard_Aeronaut">this</a>.</p>
+<h3>How Do I Use It?</h3>
+<p>Getting the mouseovers to work is fairly straightforward, first - add the following snippet between your &lt;head> and &lt;/head> tags:
+	<code>
+		&lt;script src="http://hexmetrics.ni.tl/js/hex-card-hover.js">&lt;/script>
+	</code>
+</p>
+<p>Next, you link to a HEX Wiki card like http://hextcg.gamepedia.com/Phoenix_Guard_Aeronaut and use the class 'hex-card', like so:
+<code>
+	&lt;a class="hex-card" href="http://hextcg.gamepedia.com/Phoenix_Guard_Aeronaut">Phoenix Guard Aeronaut&lt;/a>
+</code>
+</p>
+<p>Now, when someone mouses over your link, you get <a class="hex-card" href="http://hextcg.gamepedia.com/Phoenix_Guard_Aeronaut">Phoenix Guard Aeronaut</a>.</p>
+<h3>Something doesn't work!</h3>
+<p>The tool is currently under active development, if you need further help, please leave a comment below. Additionally, if you can help out with any part of the process, please let me know - there are a couple of glaring omissions at the moment, such as card colours and cart art.</p>
+</div>
+</div>
+<div class="widget stacked">
+      		<div class="widget-header">
+			<i class="icon-pushpin"></i>
+			<h3>Comments</h3>
+			</div> <!-- /widget-header -->
+
+			<div class="widget-content">
+
+			    <div id="disqus_thread"></div>
+			</div>
+</div>
+
 </div>
 </div>
 </div>
 </div>
-</div>
-</div>
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+var disqus_shortname = 'hexmetrics'; // required: replace example with your forum shortname
+		
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+(function () {
+	var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+   (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+
+</script>
+{% endblock %}
+
+{% block footer_right %}
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 {% endblock %}

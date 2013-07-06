@@ -29,7 +29,7 @@ $(document).ready (function () {
 			});
 			
 			
-			$("#hex-cards-box iframe").prop("src", '/tools/cardJSFrame?url='+$a_ref.prop('href'));
+			$("#hex-cards-box iframe").prop("src", 'http://hexmetrics.ni.tl/tools/cardJSFrame?url='+$a_ref.prop('href'));
 			$("#hex-cards-box iframe").load ( function () {
 				$("#hex-cards-box").show()
 			})
