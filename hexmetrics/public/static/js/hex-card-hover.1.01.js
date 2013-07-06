@@ -16,6 +16,7 @@ $(document).ready (function () {
 		$('#hex-cards-box').css('height', '386px');
 		$('#hex-cards-box').css('margin', '0');
 		$('#hex-cards-box').css('padding', '0');
+		$('#hex-cards-box').css('z-index', '99999');
 		
 		$('#hex-cards-box iframe').css('width', '250px');
 		$('#hex-cards-box iframe').css('height', '385px');
