@@ -1,7 +1,7 @@
 function done(){ //on submit function
 	var s = document.createElement( 'script' );
 	s.type = 'text/javascript';
-	s.src = 'http://hexmetrics.ni.tl/static/js/hex-card-hover.1.00.js';
+	s.src = 'http://hexmetrics.ni.tl/static/js/hex-card-hover.1.01.js';
 	$('body').append( s );
 }
 
