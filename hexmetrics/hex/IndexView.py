@@ -7,9 +7,13 @@ from SnippetView import Snippets
 
 class IndexView(FlaskView):
     def index(self):
+        from main import db
+        from models import Cards
+        from config import COLOURS_FOR_SHARDS
         snippets = Snippets.getSnippetsForPage(request.endpoint)
-        posts = BlogData.topPosts(3)
-        return render_template('index.html', top_posts=posts, snippets=snippets);
+        posts = BlogData.topPosts(5)
+        cards = db.session.query(Cards.colour, db.func.count(Cards.colour)).group_by(Cards.colour).all()
+        return render_template('index.html', top_posts=posts, snippets=snippets, cards=cards, card_colours=COLOURS_FOR_SHARDS);
 
     @route('/favicon.ico')
     def favicon(self):

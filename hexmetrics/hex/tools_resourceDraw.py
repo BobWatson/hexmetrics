@@ -77,7 +77,7 @@ class ResourceCalculator():
             
             d = ['%s' % (turn-turn_one_draw+1)]
             for single_type in types:
-                d.append(type['name'])
+                d.append(single_type['name'])
             
             data.append(d)
             

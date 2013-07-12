@@ -66,9 +66,51 @@
 </div> <!-- /main -->
 
 {% endblock %}
+{% block javascript_code %}
+
+var data = [];
+var colour = [];
+
+var i = 0;
+{% for colour in cards %} 
+data[i] = { label: "{% if colour[0] == "" %}None{%else%}{{ colour[0] }}{%endif%}", data: {{ colour[1] }} }
+colour[i] = "{{ card_colours[colour[0]] }}"
+i++;
+{% endfor %}
+
+
+$.plot($("#donut-chart"), data,
+{
+	colors: colour,
+        series: {
+            pie: { 
+                innerRadius: 0.35,
+                tilt:0.5,
+                show: true,
+                stroke: {
+                	color: '#999',
+                	width:1
+                },
+                label: {
+        			show:true,
+        			radius:0.9,
+        			formatter: function (label, series) {
+        				console.log(label)
+        				console.log(series)
+        				return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+series.data[0][1]+' ('+Math.round(series.percent)+'%)</div>';
+        			},
+        			background: { opacity: 0.8 }
+        		}
+            }
+		},
+        legend: {
+            show: false
+        }
+        
+});
+
+{% endblock %}
 {% block javascript %}
 {{ super() }}
-<script src="/static/theme/js/charts/area.js"></script>
-<script src="/static/theme/js/charts/donut.js"></script>
 {% endblock %}
 
