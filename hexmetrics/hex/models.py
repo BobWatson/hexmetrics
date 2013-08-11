@@ -165,7 +165,7 @@ class Cards(db.Model):
         self.threshold_icons = threshold_icons
         self.rarity = rarity
         self.description = description
-        self.url = url
+        self.url = url.replace(',', '%2C')
         self.img_url = img_url
         
     def __repr__ (self):
