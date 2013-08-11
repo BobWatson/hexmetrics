@@ -158,6 +158,7 @@ class Cards(db.Model):
     img_url = db.Column(db.UnicodeText)
     
     def __init__ (self, name='',colour='',cost='',card_type='',threshold_icons='',rarity='',description='',url='', img_url=''):
+        import urllib
         self.name = name
         self.colour = colour
         self.cost = cost
@@ -165,7 +166,7 @@ class Cards(db.Model):
         self.threshold_icons = threshold_icons
         self.rarity = rarity
         self.description = description
-        self.url = url.replace(',', '%2C')
+        self.url = url = '%s%s' % (url[0:url.rfind('/')],urllib.quote(url[url.rfind('/'):]))
         self.img_url = img_url
         
     def __repr__ (self):
