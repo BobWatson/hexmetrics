@@ -45,7 +45,7 @@ class IndexView(FlaskView):
                 with open(file_name, "wb") as r:
                     r.write(req.content)
 
-                return redirect(url_for('static', filename = '%s/%s'%(CACHE_URL_LOCATION,url_name)))
+                return redirect(url_for('static', filename = '%s/%s'%(CACHE_URL_LOCATION,url_name)), code=302)
                 
         abort(404)
             
